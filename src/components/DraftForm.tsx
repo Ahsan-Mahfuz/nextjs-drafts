@@ -1,18 +1,18 @@
-"use client";
+'use client'
 
-import { useState } from "react";
+import { useState } from 'react'
 
 export default function DraftForm({ onAdd }: { onAdd: (draft: any) => void }) {
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useState('')
+  const [body, setBody] = useState('')
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!title.trim()) return;
-    onAdd({ id: Date.now(), title, body, updatedAt: Date.now() });
-    setTitle("");
-    setBody("");
-  };
+    e.preventDefault()
+    if (!title.trim()) return
+    onAdd({ id: Date.now(), title, body, updatedAt: Date.now() })
+    setTitle('')
+    setBody('')
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3 p-4 border rounded-lg">
@@ -29,9 +29,12 @@ export default function DraftForm({ onAdd }: { onAdd: (draft: any) => void }) {
         className="w-full border p-2 rounded"
         rows={5}
       />
-      <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">
+      <button
+        type="submit"
+        className="px-4 py-2 bg-blue-600 text-white rounded"
+      >
         Add Draft
       </button>
     </form>
-  );
+  )
 }
