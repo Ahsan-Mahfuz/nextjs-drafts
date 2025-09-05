@@ -58,10 +58,11 @@ export default function DraftList({
 
   return (
     <div className="space-y-3">
-      <div className="grid grid-cols-3 font-semibold">
+     { drafts.length > 0 &&<div className="grid grid-cols-3 font-semibold">
         <div>Title</div>
         <div>Body</div>
-      </div>
+        <div>Action</div>
+      </div>}
 
       {drafts.map((d) => (
         <div key={d.id} className="p-3 border rounded grid grid-cols-3">
