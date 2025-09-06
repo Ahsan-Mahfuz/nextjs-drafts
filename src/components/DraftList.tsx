@@ -13,6 +13,7 @@ export default function DraftList({
   const [editId, setEditId] = useState<number | null>(null)
   const [editTitle, setEditTitle] = useState('')
   const [editBody, setEditBody] = useState('')
+  const [isPublishing, setIsPublishing] = useState(false)
 
   useEffect(() => {
     localStorage.setItem('drafts', JSON.stringify(drafts))
@@ -45,24 +46,36 @@ export default function DraftList({
   }
 
   const handlePublish = async () => {
-    const res = await fetch('/api/publish', {
-      method: 'POST',
-      body: JSON.stringify({ drafts }),
-    })
-    if (res.ok) {
-      alert('Published!')
-      setDrafts([])
-      localStorage.removeItem('drafts')
+    try {
+      setIsPublishing(true)
+      const res = await fetch('/api/publish', {
+        method: 'POST',
+        body: JSON.stringify({ drafts }),
+      })
+      if (res.ok) {
+        alert('Published!')
+        setDrafts([])
+        localStorage.removeItem('drafts')
+      } else {
+        alert(`Error: Already have the same title`)
+      }
+    } catch (err) {
+      console.error(err)
+      alert('Failed to publish drafts')
+    } finally {
+      setIsPublishing(false)
     }
   }
 
   return (
     <div className="space-y-3">
-     { drafts.length > 0 &&<div className="grid grid-cols-3 font-semibold">
-        <div>Title</div>
-        <div>Body</div>
-        <div>Action</div>
-      </div>}
+      {drafts.length > 0 && (
+        <div className="grid grid-cols-3 font-semibold">
+          <div>Title</div>
+          <div>Body</div>
+          <div>Action</div>
+        </div>
+      )}
 
       {drafts.map((d) => (
         <div key={d.id} className="p-3 border rounded grid grid-cols-3">
@@ -82,9 +95,12 @@ export default function DraftList({
       {drafts.length > 0 && (
         <button
           onClick={handlePublish}
-          className="px-4 py-2 bg-green-600 text-white rounded"
+          disabled={isPublishing}
+          className={`px-4 py-2 rounded text-white ${
+            isPublishing ? 'bg-gray-500 cursor-not-allowed' : 'bg-green-600'
+          }`}
         >
-          Publish All
+          {isPublishing ? 'Publishing...' : 'Publish All'}
         </button>
       )}
 
