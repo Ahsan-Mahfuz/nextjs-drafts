@@ -13,7 +13,7 @@ export default function HomePage() {
   }, [])
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-6">
+    <div className="max-w-3xl mx-auto p-6 space-y-6">
       <h1 className="text-3xl font-bold">Draft Manager</h1>
       <DraftForm onAdd={(d) => setDrafts([...drafts, d])} />
       <DraftList drafts={drafts} setDrafts={setDrafts} />
